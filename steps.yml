@@ -1,7 +1,9 @@
 generate:
   process:
     process_type: 'interpolated-script-cmd'
-    script: python generate.py {events} {outfilename}
+    script: |
+        source /usr/local/bin/thisroot.sh
+        python generate.py {events} {outfilename}
   publisher:
     publisher_type: 'frompar-pub'
     outputmap:
@@ -13,7 +15,9 @@ generate:
 train:
   process:
     process_type: 'interpolated-script-cmd'
-    script: python trainBDT.py {data} {outfile}
+    script: |
+        source /usr/local/bin/thisroot.sh
+        python trainBDT.py {data} {outfile}
   publisher:
     publisher_type: 'frompar-pub'
     outputmap:
@@ -26,7 +30,9 @@ train:
 read:
   process:
     process_type: 'interpolated-script-cmd'
-    script: python readBDT.py {output} {outname}
+    script: |
+        source /usr/local/bin/thisroot.sh
+        python readBDT.py {output} {outname}
   publisher:
     publisher_type: 'frompar-pub'
     outputmap:
