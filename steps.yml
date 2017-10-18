@@ -1,0 +1,36 @@
+generate:
+  process:
+    process_type: 'interpolated-script-cmd'
+    script: python generate.py {events} {outfilename}
+  publisher:
+    publisher_type: 'frompar-pub'
+    outputmap:
+      data: outfilename
+  environment:
+    environment_type: 'docker-encapsulated'
+    image: vincecr0ft/pyroot-generate
+
+train:
+  process:
+    process_type: 'interpolated-script-cmd'
+    script: python trainBDT.py {data} {outfile}
+  publisher:
+    publisher_type: 'frompar-pub'
+    outputmap:
+      output: outfile
+  environment:
+    environment_type: 'docker-encapsulated'
+    image: vincecroft/pyroot-generate
+
+
+read:
+  process:
+    process_type: 'interpolated-script-cmd'
+    script: python readBDT.py {output} {outname}
+  publisher:
+    publisher_type: 'frompar-pub'
+    outputmap:
+      plot: outname
+  environment:
+    environment_type: 'docker-encapsulated'
+    image: vincecroft/pyroot-generate

@@ -1,0 +1,25 @@
+stages:
+  - name: generate
+    dependencies: ['init']
+    scheduler:
+      scheduler_type: singlestep-stage
+      parameters:
+        events: {stages: init, output: events, unwrap: true}
+        outfilename: '{workdir}/data'
+      step: {$ref: 'steps.yml#/generate'}
+  - name: train
+    dependencies: ['generate']
+    scheduler:
+      scheduler_type: singlestep-stage
+      parameters:
+        data: {stages: generate, output: data, unwrap: true}
+        outfile: '{workdir}/trainedbdt'
+      step: {$ref: 'steps.yml#/train'}
+  - name: read
+    dependencies: ['train']
+    scheduler:
+      scheduler_type: singlestep-stage
+      parameters:
+        output: {stages: train, output: output, unwrap: true}
+        outname: '{workdir}/BDT'
+      step: {$ref: 'steps.yml#/read'}
