@@ -1,6 +1,7 @@
 generate:
   process:
     process_type: 'interpolated-script-cmd'
+    interpreter: bash
     script: |
         source /usr/local/bin/thisroot.sh
         python generate.py {events} {outfilename}
@@ -15,6 +16,7 @@ generate:
 train:
   process:
     process_type: 'interpolated-script-cmd'
+    interpreter: bash
     script: |
         source /usr/local/bin/thisroot.sh
         python trainBDT.py {data} {outfile}
@@ -24,12 +26,13 @@ train:
       output: outfile
   environment:
     environment_type: 'docker-encapsulated'
-    image: vincecroft/pyroot-generate
+    image: vincecr0ft/pyroot-generate
 
 
 read:
   process:
     process_type: 'interpolated-script-cmd'
+    interpreter: bash
     script: |
         source /usr/local/bin/thisroot.sh
         python readBDT.py {output} {outname}
@@ -39,4 +42,4 @@ read:
       plot: outname
   environment:
     environment_type: 'docker-encapsulated'
-    image: vincecroft/pyroot-generate
+    image: vincecr0ft/pyroot-generate
