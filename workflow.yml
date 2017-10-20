@@ -5,15 +5,18 @@ stages:
       scheduler_type: singlestep-stage
       parameters:
         events: {stages: init, output: events, unwrap: true}
-        outfilename: '{workdir}/data'
+        outfilename: '{workdir}/input'
       step: {$ref: 'steps.yml#/generate'}
   - name: train
     dependencies: ['generate']
     scheduler:
       scheduler_type: singlestep-stage
       parameters:
-        data: {stages: generate, output: data, unwrap: true}
+        inputdata: {stages: generate, output: inputdata, unwrap: true}
         outfile: '{workdir}/trainedbdt'
+        datasetname: 'dataA'
+        jobname: 'mva'
+        xmlpath: '{workdir}/weights/'
       step: {$ref: 'steps.yml#/train'}
   - name: read
     dependencies: ['train']
@@ -21,5 +24,8 @@ stages:
       scheduler_type: singlestep-stage
       parameters:
         output: {stages: train, output: output, unwrap: true}
+        datasetname: 'dataA'
+        xmldir: {stages: train, output: xmldir, unwrap: true}
+        jname: {stages: train, output: jname, unwrap: true}
         outname: '{workdir}/BDT'
       step: {$ref: 'steps.yml#/read'}

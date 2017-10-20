@@ -5,13 +5,13 @@ import argparse
 parser = argparse.ArgumentParser(description='Read a BDT trained using TMVA')
 parser.add_argument("infile")
 parser.add_argument("datasetname")
-parser.add_argument("jobname")
+parser.add_argument("xmlpath")
 parser.add_argument("outfile")
 
 args = parser.parse_args()
 infile = args.infile
 datasetname = args.datasetname
-jobname = args.jobname
+xmlpath = args.xmlpath
 outfile = args.outfile
 
 
@@ -24,7 +24,7 @@ varx = array.array('f',[0]) ; reader.AddVariable("x",varx)
 vary = array.array('f',[0]) ; reader.AddVariable("y",vary)
 
 
-reader.BookMVA("BDT",datasetname+"/weights/"+jobname+"_BDT.weights.xml")
+reader.BookMVA("BDT",xmlpath+"_BDT.weights.xml")
 
 fout = ROOT.TFile(infile+".root","READ")
 thetree = fout.Get(datasetname+"/TestTree")
