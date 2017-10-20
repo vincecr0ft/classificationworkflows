@@ -4,10 +4,14 @@ import argparse
 
 parser = argparse.ArgumentParser(description='Read a BDT trained using TMVA')
 parser.add_argument("infile")
+parser.add_argument("datasetname")
+parser.add_argument("jobname")
 parser.add_argument("outfile")
 
 args = parser.parse_args()
 infile = args.infile
+datasetname = args.datasetname
+jobname = args.jobname
 outfile = args.outfile
 
 
@@ -20,10 +24,10 @@ varx = array.array('f',[0]) ; reader.AddVariable("x",varx)
 vary = array.array('f',[0]) ; reader.AddVariable("y",vary)
 
 
-reader.BookMVA("BDT","dataset1/weights/TMVAClassification_BDT.weights.xml")
+reader.BookMVA("BDT",datasetname+"/weights/"+jobname+"_BDT.weights.xml")
 
 fout = ROOT.TFile(infile+".root","READ")
-thetree = fout.Get("dataset1/TestTree")
+thetree = fout.Get(datasetname+"/TestTree")
 Histo_signal = ROOT.TH1D('Histo_signal','signal',11,-1.,1.)
 Histo_background = ROOT.TH1D('Histo_background','background',11,-1.,1.)
 thetree.Project("Histo_signal","BDT","classID<0.5")

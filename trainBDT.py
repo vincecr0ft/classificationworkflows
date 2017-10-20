@@ -3,10 +3,14 @@ import argparse
 
 parser = argparse.ArgumentParser(description='Train a BDT using TMVA')
 parser.add_argument("infile")
+parser.add_argument("datasetname")
+parser.add_argument("jobname")
 parser.add_argument("outfile")
 
 args = parser.parse_args()
 infile = args.infile
+datasetname = args.datasetname
+jobname = args.jobname
 outfile = args.outfile
 
 
@@ -15,7 +19,7 @@ ntuple = infile.Get("ntuple")
 
 ROOT.TMVA.Tools.Instance()
 fout = ROOT.TFile(outfile+".root","RECREATE")
-factory = ROOT.TMVA.Factory("TMVAClassification", fout,
+factory = ROOT.TMVA.Factory(jobname, fout,
                             ":".join([
                                 "!V",
                                 "!Silent",
@@ -25,7 +29,7 @@ factory = ROOT.TMVA.Factory("TMVAClassification", fout,
                                 "AnalysisType=Classification"]
                                      ))
 
-loader = ROOT.TMVA.DataLoader("dataset1")
+loader = ROOT.TMVA.DataLoader(datasetname)
 loader.AddVariable("x","F")
 loader.AddVariable("y","F")
 loader.AddSignalTree(ntuple)
