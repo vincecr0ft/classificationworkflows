@@ -19,13 +19,14 @@ train:
     interpreter: bash
     script: |
         source /usr/local/bin/thisroot.sh
-        python trainBDT.py {inputdata} {datasetname} {jobname} {outfile}
+        cd {workdir}
+        python /code/trainBDT.py {inputdata} {datasetname} {jobname} {outfile}
   publisher:
-    publisher_type: 'frompar-pub'
-    outputmap:
-      output: outfile
-      xmldir: xmlpath
-      jname: jobname
+    publisher_type: 'interpolated-pub'
+    publish:
+      output: '{outfile}'
+      xmldir: '{workdir}/{datasetname}/weights/'
+      jname: '{jobname}'
   environment:
     environment_type: 'docker-encapsulated'
     image: vincecr0ft/pyroot-generate

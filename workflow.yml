@@ -14,9 +14,9 @@ stages:
       parameters:
         inputdata: {stages: generate, output: inputdata, unwrap: true}
         outfile: '{workdir}/trainedbdt'
+        workdir: '{workdir}'
         datasetname: 'dataA'
         jobname: 'mva'
-        xmlpath: '{workdir}/weights/'
       step: {$ref: 'steps.yml#/train'}
   - name: read
     dependencies: ['train']
